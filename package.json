@@ -1,0 +1,35 @@
+{
+  "name": "Slackbox",
+  "description": "Simple web-based lightbox for viewing images",
+  "version": "0.0.1",
+  "author": {
+    "name": "Derryl Carter",
+    "email": "derrylcarter@gmail.com"
+  },
+  "homepage": "http://www.github.com/derryl/Slackbox",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "grunt": "~0.4.4"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-htmlcompressor": "*",
+    "grunt-text-replace": "*",
+    "grunt-contrib-less": "~0.5.1",
+    "less": "*",
+    "grunt-shell": "~0.2.2",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-newer": "~0.5.4",
+    "bower": "^1.4.1",
+    "grunt-bower-concat": "^0.5.0"
+  }
+}

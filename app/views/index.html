@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Lightboxr</title>
+        <link rel="stylesheet" href="styles/master.css">
+    </head>
+    
+    <body>
+        
+        <div id="container">
+        
+            <div class="loader">Loading</div>
+        
+            <div class="set_meta"></div>
+            
+            <div id="gallery"></div>
+            
+            <div class="lightbox hidden"></div>
+            
+        </div>
+        
+        <!-- Header -->
+        <script type="text/template" id="gallery-header">
+            <h1><a href="<%= set.href %>" target="_blank"><%= set.title %></a></h1>
+            <h3><%= set.total %> photos • <%= set.ownername %></h3>
+        </script>
+        
+        <!-- Photo Thumbnail -->
+        <script type="text/template" id="photo-thumbnail">
+            <span class="thumb">
+                <img src="<%= photo.thumbnail.source %>" 
+                     alt="<%= photo.title %>"
+                     data-index="<%= photo.index %>">
+                <span class="label"><%= photo.title %></span>
+            </span>
+        </script>
+        
+        <!-- Lightbox Viewer -->
+        <script type="text/template" id="lightbox-photo">
+            <div class="viewer">
+                <div class="left rail">
+                    <a id="prevPhoto" href="javascript:void(0)" class="arrow left"></a>
+                </div>
+                <div class="lb-photo" style="background-image: url('<%= photo.fullsize.source %>')">
+                    <!-- <div class="label"><%= photo.index %></div> -->
+                </div>
+                <div class="right rail">
+                    <a id="nextPhoto" href="javascript:void(0)" class="arrow right"></a>
+                </div>
+            </div>
+        </script>
+        
+        <script src="scripts/app.js"></script>
+        
+    </body>
+    
+</html>
