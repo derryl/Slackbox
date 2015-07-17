@@ -7,6 +7,7 @@ var config = {};
     config.USE_FIXTURES = true;
 
 var authBox = document.querySelector('.auth-box');
+
 var toggleAuthBox = function() {
     var curClass = authBox.getAttribute('class');
     if (!/hidden/i.test(authBox.getAttribute('class'))) {
@@ -14,7 +15,118 @@ var toggleAuthBox = function() {
     } else {
         authBox.setAttribute('class','auth-box');
     }
+};
+
+var ensureIsNode = function(item) {
+    return (item instanceof Node) ? item : document.querySelector( item );
 }
+
+var Lightbox = function() {
+    
+    var $$ = this;
+    
+    $$.currentIndex = 0;
+    var btns = {};
+    
+    var listeners = [
+        [ document.body, 'click', clickToClose ],
+        [ document.body, 'keyup', keyHandler   ],
+        [ '#nextPhoto',  'click', $$.nextPhoto ],
+        [ '#prevPhoto',  'click', $$.prevPhoto ]
+    ];
+    
+    $$.init = function( photos ) {
+        $$.el = document.querySelector('#lightbox');
+        $$.photos = photos || null;
+        
+        btns.next  = $$.el.querySelector('#nextPhoto');
+        btns.prev  = $$.el.querySelector('#prevPhoto');
+        btns.close = $$.el.querySelector('#closeBtn');
+        
+        
+        
+        return $$;
+    };
+    
+    $$.updatePhotos = function( photos ) {
+        $$.lastPhoto  = photos.length;
+        $$.firstPhoto = 0;
+        return ( $$.photos = photos || $$.photos || null );
+    }
+    
+    $$.show = function( index ) {
+        
+        if (typeof index !== 'number') return;
+        if (index > $$.lastPhoto) return;
+        if (index < 0) return;
+        
+        $$.currentIndex = index;
+        
+        var photo = $$.photos.filter( function(pic) {
+            return pic.index === index;
+        })[0];
+
+        setTimeout( bindListeners, 5);
+        bindData( $$.el, photo );
+        $$.el.setAttribute('class','');
+        return $$;
+    };
+    
+    $$.nextPhoto = function() {
+        if ($$.currentIndex < $$.lastPhoto) {
+            $$.currentIndex++;
+            $$.show( $$.currentIndex );
+        } return;
+    }
+    
+    $$.prevPhoto = function() {
+        if ($$.currentIndex > 0) {
+            $$.currentIndex--;
+            $$.show( $$.currentIndex );
+        } return;
+    }
+    
+    var clickToClose = function( e ) {
+        if (e.target.isChildOf('.viewer')) return;
+        $$.hide();
+    };
+    
+    // 27 = esc, 37 = < , 39 = >
+    var keyHandler = function( e ) {
+        switch (e.which) {
+            case 27: return $$.hide();
+            case 37: return $$.prevPhoto();
+            case 39: return $$.nextPhoto();
+        }
+    };
+    
+    var bindListeners = function() {
+        listeners.forEach( function(l) {
+            var target = ensureIsNode(l[0]),
+                eventType = l[1],
+                eventHandler = l[2];
+            try { target.addEventListener( eventType, eventHandler ) }
+            catch(e) { console.error(e) }
+        });
+    };
+    
+    var unbindListeners = function() {
+        listeners.forEach( function(l) {
+            var target = ensureIsNode(l[0]),
+                eventType = l[1],
+                eventHandler = l[2];
+            try { target.removeEventListener( eventType, eventHandler ) }
+            catch(e) { console.error(e) }
+        });
+    };
+    
+    $$.hide = function() {
+        unbindListeners();
+        $$.el.setAttribute('class','hidden');
+    };
+    
+    return $$.init();
+};
 
 var Renderer = function() {
     
@@ -22,18 +134,21 @@ var Renderer = function() {
     
     $$.init = function( rootEl ) {
         $$.el = document.querySelector( rootEl );
-        emoji.img_path = '/images/emoji/';
+        $$.lightbox = new Lightbox();
         return $$;
     };
 
     $$.render = function( data ) {
-        log('----------------')
+        // log('----------------')
         if (data.data) {
             
             log(data);
             
             if (data.data instanceof Array) {
                 $$.renderPhotos( data );
+                // $$.lightbox = new Lightbox( $$.photos );
+                // log($$.lightbox.show)
+                $$.lightbox.show($$.photos[0]);
             } else {
                 $$.renderUser( data );
             }
@@ -45,29 +160,14 @@ var Renderer = function() {
     };
     
     $$.renderPhotos = function( data ) {
-        
         $$.photos = data.data;
-        window.photos = $$.photos;
-        
-        var photoHTML = '';
-        
-        $$.photos.forEach( $$.renderThumbnail );
-        
-        return;
-        
-        
-        $$.photos.forEach( function( pic ) {
-            var thumbSrc = pic.images.low_resolution.url;
-                caption  = deep(pic,'caption.text') ? prepareCaption(pic.caption.text) : '';
-            
-            var thumbHTML = 
-                "<span class='thumb'><img src='{url}' /><span class='label'>{caption}</span></span>"
-                .supplant({ url: thumbSrc, caption: caption });
-            
-            photoHTML += thumbHTML;
+        var i = -1;
+        $$.photos.forEach( function( photo ) {
+            photo.index = ++i;
+            $$.renderThumbnail( photo );
         });
-        
-        $$.el.innerHTML = photoHTML;
+        $$.lightbox.updatePhotos( $$.photos );
+        return $$.photos;
     };
     
     $$.renderThumbnail = function( pic ) {
@@ -95,8 +195,8 @@ var Renderer = function() {
                 ("<div class='thumb-img'>"+
                     "<img src='{url}' />"+
                     "<div class='metadata'>"+
-                        "<span class='meta-icon likecount'>{numLikes}</span>"+
-                        "<span class='meta-icon commentcount'>{numComments}</span>"+
+                        "<span class='meta-icon likecount'><span class='icon icon-like'></span> {numLikes}</span>"+
+                        "<span class='meta-icon commentcount'><span class='icon icon-comment'></span> {numComments}</span>"+
                     "</div>"+
                 "</div>"+
                 "<span class='thumb-caption'>{caption}</span>")
@@ -109,7 +209,7 @@ var Renderer = function() {
         
         thumbEl.setAttribute('class','thumb');
         thumbEl.addEventListener('click', function(s,e,a) {
-            log(pic);
+            $$.lightbox.show(pic.index);
         });
         thumbEl.innerHTML = thumbHTML;
         $$.el.appendChild(thumbEl);
@@ -118,15 +218,23 @@ var Renderer = function() {
     $$.renderUser = function( data ) {
         $$.user = data;
         window.user = $$.user;
+        // bindData( 'body', $$.user );
         // log($$.user)  
     };
     
-    $$.showLightBox = function() {
-        
+    // $$.showLightBox = function( photo ) {
+    //     // history.pushState({ photo: photo }, 'View photo', '/view/'+photo.id);
+    //     $$.lightbox.setAttribute('class','');
+    //     bindData( $$.lightbox, photo );
+    //     // $$.lightbox.querySelector('.lb-photo').setAttribute('src',)
+    // };
+    
+    $$.hideLightBox = function() {
+        return $$.lightbox.setAttribute('class','hidden');
     };
     
     $$.showAuthBox = function() {
-        $('.auth-box').removeClass('hidden');
+        return $('.auth-box').removeClass('hidden');
     };
     
     return $$;
@@ -221,43 +329,6 @@ var API = function() {
     return this;
 };
 
-var constructURL = function(a) {
-    
-    var args = arguments[0];
-    
-    if (!args) args = {};
-    if (!args.cb) args.cb = "responseHandler";
-
-    args.base = "https://api.instagram.com/v1";
-        
-    var url = "{base}/users/{user_id}/media/recent/?access_token={access_token}&callback={cb}".supplant(args);
-    
-    return url;
-};
-
-var GET = function( args ) {
-    if (!args) return;
-    if (!args.cb) args.cb = "responseHandler";
-    var url = constructURL( args );
-    log('making request to', url);
-    
-    var scriptTag = document.createElement('script');
-    scriptTag.setAttribute( "src", url );
-    document.getElementsByTagName("head")[0].appendChild(scriptTag);
-};
-
-window.dumpLoad = function(data) {
-    log(data);
-};
-
-window.dump = function(data) {
-    // log(JSON.parse(data));
-    // if (data.meta && data.meta.code === 200) {
-    //     console.log("Success!");
-    //     window.data = data;
-    // }
-    // document.write(data);
-};
 
 checkForToken = function() {
     var hash = window.location.hash;
@@ -267,12 +338,11 @@ checkForToken = function() {
     return hash;
 }
 
-
-var bindData = function( parentSelector, data ) {
+var bindData = function( parent, data ) {
         
-    var el = document.querySelector( parentSelector );
+    var el = (parent instanceof Node) ? parent : document.querySelector( parent );
     if (!el) return;
-    
+
     var els = el.querySelectorAll('*');
     
     var bindingMap = {
@@ -296,8 +366,8 @@ var bindData = function( parentSelector, data ) {
     function applyBinding( el, bindType ) {
         if (!bindType || !bindingMap[bindType]) return;
         var b = el.getAttribute( bindType );
-        if (b && data[b]) {
-            el[bindingMap[bindType]] = data[b];
+        if (b && deep(data, b)) {
+            el[bindingMap[bindType]] = deep(data, b);
         }
     };
     
@@ -313,60 +383,60 @@ var bindData = function( parentSelector, data ) {
         
 };
 
-window.onload = function() {
-    
-    // emoji.text_mode = true;
-    
-    bindData( 'body', { username: 'drryl' });
-    
+function init( cb ) {
+
     var access_token = null,
         user_id = "11025817",
         hash, api, ui;
+    
+    emoji.img_path = "/images/emoji/";
+    for (var set in emoji.img_sets) {
+        emoji.img_sets[set].path = "/images/emoji/";
+    };
     
     ui  = new Renderer().init('#gallery');
         window.ui = ui;
         window.responseHandler = ui.render;
     
-    api = new API().init(ui);
+    api  = new API().init(ui);
     
     if (config.USE_FIXTURES === true) {
         api.getFixture( '/scripts/drryl-feed.json', ui.renderPhotos );
         api.getFixture( '/scripts/drryl-user.json', ui.renderUser );
-        return;
     }
-    
-    hash = api.getToken(ui);
-    
     // Hash indicates we just returned from Instagram, and have an access_token
-    if (hash && hash !== "" && hash.indexOf('access_token')) {
+    else {
         
-        access_token = location.hash.split('=')[1];
+        hash = api.getToken(ui);
         
-        history.pushState({}, 'Lightboxr', '/');
-        
-        api.setToken( access_token );
-        
-        api.getUserInfo("11025817");
-        api.getUserFeed("11025817");
-        // api.get({ user_id: user_id, access_token: access_token });
+        if (hash && hash !== "" && hash.indexOf('access_token')) {
+            
+            access_token = location.hash.split('=')[1];
+            
+            history.pushState({}, 'Lightboxr', '/');
+            
+            api.setToken( access_token );
+            api.getUserInfo("11025817");
+            api.getUserFeed("11025817");
+            // api.get({ user_id: user_id, access_token: access_token });
+        }
+    
+        // No access_token present. We must ask the user to authenticate
+        // before we can grab any data from Instagram. 
+        //      https://instagram.com/developer/authentication/
+        else {
+            
+            $('.auth-box').removeClass('hidden');
+        }
     }
-    
-    
-    // No access_token present. We must ask the user to authenticate
-    // before we can grab any data from Instagram. 
-    //      https://instagram.com/developer/authentication/
-    else $('.auth-box').removeClass('hidden');
-    
-    // var hidden = true;
-    // setInterval( toggleAuthBox , 3000);
-    
-    (function() {
-        
-        var els = document.querySelectorAll('*');
-        [].forEach.call( els, function(el) {
-            console.log(el)
-        })
-        
-    })();
-    
 };
+
+window.onload = function() {
+    
+    init();
+    // setTimeout( init, 2000000 );
+    // setInterval()
+    // var classes = 'one two three';
+    // window.g = $('#gallery').addClass( classes );
+    // g.hasClass('two');
+}

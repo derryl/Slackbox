@@ -6,6 +6,10 @@
     "name": "Derryl Carter",
     "email": "derrylcarter@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/derryl/Slackbox"
+  },
   "homepage": "http://www.github.com/derryl/Slackbox",
   "engines": {
     "node": ">= 0.10.0"
@@ -30,6 +34,7 @@
     "grunt-contrib-watch": "~0.4.4",
     "grunt-newer": "~0.5.4",
     "bower": "^1.4.1",
-    "grunt-bower-concat": "^0.5.0"
+    "grunt-bower-concat": "^0.5.0",
+    "grunt-includes": "^0.5.1"
   }
 }

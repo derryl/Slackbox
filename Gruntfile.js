@@ -95,8 +95,8 @@ module.exports = function(grunt) {
             },
             html: {
                 files: [ _src + '/**/*.html'],
-                tasks: [ 'copy:views' ],
-                // options: { livereload: true }
+                tasks: [ 'copy:views', 'includes:html' ],
+                options: { livereload: true }
             },
             js: {
                 files: [ _src + '/scripts/**/*.js' ],
@@ -115,13 +115,38 @@ module.exports = function(grunt) {
             local: {
                 files: [ _local + '/**/*' ],
                 options: { livereload: true }
+            },
+            localHTML: {
+                files: [ _src + '/styles/**/*.less', _src + '/partials/**/*' ],
+                tasks: [ 'less:dev' ,'includes:html' ],
+                options: { livereload: true }
             }
         },
 
         // Styles compile to: /styles/master.css
         less: {
             dev: {
-                files: [{ 'local/styles/master.css': 'app/styles/master.less' }]
+                files: [
+                    { 'local/styles/master.css': 'app/styles/master.less' },
+                    { 'local/styles/_loader.css': 'app/styles/___loader.less' }
+                ]
+            }
+        },
+        
+        includes: {
+            html: {
+                options: {
+                    includeRegExp: /^\/\/\s*include\s+['"]?([^'"]+)['"]?\s*$/,
+                    duplicates: false,
+                    // debug: true,
+                    silent: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: _local,
+                    src: '**/*.html',
+                    dest: _local
+                }]
             }
         },
 
@@ -138,6 +163,7 @@ module.exports = function(grunt) {
         'grunt-contrib-watch',
         'grunt-contrib-less',
         'grunt-contrib-copy',
+        'grunt-includes',
         'grunt-shell',
         'grunt-newer'
         
@@ -148,6 +174,7 @@ module.exports = function(grunt) {
         'clean:all',
         'copy:local',
         'less:dev',
+        'includes:html'
         // 'concat:app',
         // 'copy:local',
         // 'clean:temp'
@@ -160,7 +187,7 @@ module.exports = function(grunt) {
     
     grunt.registerTask( 'default', [
         'build',
-        'shell:launchBrowser',
+        // 'shell:launchBrowser',
         'server'
     ]);
 

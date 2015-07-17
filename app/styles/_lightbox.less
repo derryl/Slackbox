@@ -1,0 +1,75 @@
+// Lightbox
+#lightbox {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width:  100vw;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: @darkGrey;
+    
+    .viewer {
+        position: relative;
+        width: 85%;
+        height: 90vh;
+        // height: 90vh;
+        // background-color: @white;
+        // padding: 1em;
+        // border-radius: 1em;
+        // flex: 1 1 auto;
+        display: flex;
+        flex-direction: row;
+        
+        #closeLightbox {
+            flex: 0 0 auto;
+        }
+        
+        .lb-photo {
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: space-around;
+        }
+        
+        img {
+            display: inline-block;
+            flex: 0 1 640px;
+            // max-width: 100%;
+            margin: 0 auto;
+            max-height: 100%;
+            width: auto;
+        }
+        
+        .lb-photo,.rail {
+            // border: 1px solid red;
+        }
+        
+        .rail {
+            display: flex;
+            // flex-direction:
+            // align-items: stretch;
+            justify-content: center;
+            &.left { margin-right: auto; }
+            &.right { margin-left: auto; }
+        }
+    }
+    
+    &.hidden { display: none }
+}
+
+.arrow {
+    display: inline-block;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    // height: 100%;
+    background-color: rgba(255,255,255,0.5);
+    background-image: url('/images/arrow-up-c.svg');
+    background-size: auto 100%;
+    background-repeat: none;
+    
+    &.right { .rotate(90deg) }
+    &.left { .rotate(-90deg) }
+}

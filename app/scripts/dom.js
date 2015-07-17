@@ -62,6 +62,32 @@ window.$ = ( function( window, document, fn, nsRegAndEvents, id, s_EventListener
             return this;
         },
         
+        hasClass: function( c ) {
+            
+            var hasClass = false;
+        
+            for (var i = 0; i < this.length; i++) {
+                item = this[i];
+                
+                var k = ( item.getAttribute('class') || [] );
+                
+                if (typeof k === 'string') k = k.split(' ');
+                
+                if (k.indexOf(c) >= 0) {
+                    hasClass = true;
+                    break;
+                }
+            }
+        
+            return hasClass;
+        },
+        
+        toggleClass: function( c ) {
+            return (this.hasClass(c)) ?
+                this.removeClass(c) :
+                this.addClass(c); 
+        },
+        
         on: function( n, f ) {
             // n = [ eventName, nameSpace ]
             n = n.split( nsRegAndEvents );

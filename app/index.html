@@ -3,25 +3,26 @@
     <head>
         <meta charset="utf-8"/>
         <title>Lightboxr</title>
+        
+        <link rel="stylesheet" href="styles/_loader.css">
         <link rel="stylesheet" href="styles/master.css">
-        <script src="scripts/emoji.js"></script>
         <script src="scripts/dom.js"></script>
+        <script src="scripts/emoji.js"></script>
+        <!-- <script src="scripts/routes.js"></script> -->
         <script src="scripts/utilities.js"></script>
     </head>
     
-    <body>
+    <body class="loading">
         
         <div id="container">
         
-            <!-- <div class="loader">Loading</div> -->
-        
-            <div class="set_meta"></div>
+            <!-- Loading screen -->
+            include "partials/loader.html"
             
-            <div class="user-info">
-                <h1 data-text="username"></h1>
-                <img data-src="profile_picture" />
-            </div>
+            <!-- User Info -->
+            include "partials/header.html"
             
+            <!-- Modal dialog for obtaining user authentication -->
             <div class="auth-box hidden">
             
                 <p>We need an <code>access_token</code> in order to request data from Instagram's API.</p>
@@ -32,11 +33,30 @@
                 
             </div>
             
-            <div id="gallery"></div>
+            <!-- Feed -->
+            <div id="gallery" data-show-on-load></div>
             
-            <div class="lightbox hidden"></div>
+            <!-- Lightbox for viewing individual photos -->
+            <div id="lightbox" class="lightbox hidden">
+                <div class="viewer">
+                    <div class="left rail">
+                        <a id="prevPhoto" href="javascript:void(0)" class="arrow left"></a>
+                    </div>
+                    <!-- <div class="lb-photo" style="background-image: url('<%= photo.fullsize.source %>')"> -->
+                    <div class="lb-photo">
+                        <img data-src="images.standard_resolution.url" alt="">
+                        <!-- <div class="label"><%= photo.index %></div> -->
+                    </div>
+                    <div class="right rail">
+                        <a id="nextPhoto" href="javascript:void(0)" class="arrow right"></a>
+                    </div>
+                </div>
+            </div>
             
         </div>
+        
+        
+        
         
         <!-- Header -->
         <script type="text/template" id="gallery-header">
@@ -69,8 +89,8 @@
             </div>
         </script>
         
-        <script src="scripts/app.js"></script>
         
+        <script src="scripts/app.js"></script>
     </body>
     
 </html>

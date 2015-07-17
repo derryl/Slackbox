@@ -1,0 +1,107 @@
+#gallery {
+    position: relative;
+    // overflow: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    // padding: 2rem;
+    
+    .thumb {
+        
+        width: 24%;
+        // @thumbSize: 240px;
+        // flex: 0 0 auto;
+        margin-bottom: 1rem;
+        position: relative;
+        padding: 0;
+        margin: 0 1rem 2rem;
+        border-radius: .25em;
+        overflow: hidden;
+        cursor: pointer;
+        
+        &:hover {
+            .metadata { opacity: 1; bottom: 0; }
+        }
+        
+        .thumb-img {
+            position: relative;
+        }
+        
+        img {
+            // max-width: 100%;
+            margin: 0;
+            display: block;
+            width: 100%;
+            height: auto;
+            // width:  @thumbSize;
+            // height: @thumbSize;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+        
+        .metadata {
+            color: @white;
+            .bold;
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            opacity: 0;
+            padding: .75em 1em;
+            font-size: 0.85em;
+            transition: all 0.15s ease-out;
+            @media @child {
+                opacity: .9;
+                bottom: 0;
+                text-shadow: 0 1px 0 rgba(0,0,0,0.8),
+                             0 0 3px rgba(0,0,0,0.25);
+            }
+        }
+        
+        .meta-icon {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 .3em 0 1em;
+            line-height: 1;
+            font-size: 1.1em;
+            .icon {
+                font-size: 1.4em;
+                margin-top: -3px;
+                vertical-align: baseline;
+            }
+            .icon-comment {
+                margin-right: 1px;
+            }
+        }
+        
+        .thumb-caption {
+            display: block;
+            padding: 5px 0;
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    
+    @media @adult  {
+        .thumb {
+            width: 19.5%;
+        }
+    }
+    @media @teen   {
+        .thumb {
+            width: 28%; 
+        }
+    }
+    @media @child  {
+        .thumb {
+            width: 40%; 
+            margin: 0 .75rem 2rem; 
+        }
+    }
+    @media @baby   {
+        .thumb {
+            width: 90%;
+            margin: 0 0 2rem;
+        }
+    }
+}
