@@ -1,3 +1,25 @@
+.auth-box {
+    @width: 25em;
+    .center;
+    position: fixed;
+    width: @width;
+    height: auto;
+    top: 30%; left: 50%;
+    margin-left: -@width / 2;
+    background: #fff;
+    border-radius: 10px;
+    color: @darkGrey;
+    padding: 3em;
+    transition: all 0.1s ease-out;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    
+    &.hidden {
+        transform: scale3d(0.25, 0.25, 1);
+        opacity: 0;
+    }
+}
+
+
 .loader {
     text-align: center;
     padding: 1em;

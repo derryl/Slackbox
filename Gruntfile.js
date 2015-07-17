@@ -14,7 +14,8 @@ module.exports = function(grunt) {
             dist:  'dist'   // production-ready builds (more processing, takes longer)
         },
         server: {
-            port: 8797
+            port: 8797,
+            base: '127.0.0.1'
         }
     };
 
@@ -23,6 +24,7 @@ module.exports = function(grunt) {
     var _local  = config.dirs.local;
     var _dist   = config.dirs.dist;
     var _port   = config.server.port;
+    var _base   = config.server.base;
 
     grunt.initConfig({
 
@@ -40,29 +42,28 @@ module.exports = function(grunt) {
 
         copy: {
             // Copy files into /temp for processing
-            temp: {
-                files: [{ 
-                  expand: true,
-                  cwd:  _src,
-                  src:  ['views/**','images/**','favicon.ico','vendor/**/*'], 
-                  dest: _temp
-                }]
-            },
+            // temp: {
+            //     files: [{ 
+            //       expand: true,
+            //       cwd:  _src,
+            //       src:  ['views/**','images/**','favicon.ico','vendor/**/*'], 
+            //       dest: _temp
+            //     }]
+            // },
             // Copy built files into /local for viewing
             local: {
-                files: [
-                    { expand: true, cwd: _src+'/views',   src: ['*'], dest: _local },
-                    // { expand: true, cwd: _temp+'/scripts', src: ['**.coffee'], dest: _local+'/scripts' },
-                    { expand: true, cwd: _src+'/scripts', src: ['**/*js'], dest: _local+'/scripts' },
-                    { expand: true, cwd: _src+'/fonts',   src: ['*'], dest: _local+'/fonts' },
-                    { expand: true, cwd: _src+'/images',   src: ['*'], dest: _local+'/images' },
-                    // { expand: true, cwd: _temp+'/styles',  src: ['**/*'], dest: _local+'/styles' },
-                    // { expand: true, cwd: _src+'/vendor',   src: ['*'], dest: _local+'/vendor' }
-                ]
+                files: [{ 
+                    expand: true,
+                    cwd: _src, 
+                    src: [
+                        '**/*',
+                        '!**/*.less'
+                    ],
+                    dest: _local 
+                }]
             },
-            views: {
-                files: [{ expand: true, cwd: _src + '/views', src: ['*.html'], dest: _local }]
-            }
+            scripts: { files: [{ src: ['**/*.js'], expand: true, cwd: _src, dest: _local }]},
+            views:   { files: [{ src: ['**/*.html'], expand: true, cwd: _src, dest: _local }]}
         },
 
 
@@ -78,17 +79,6 @@ module.exports = function(grunt) {
         },
 
         concat: {
-            bower: {
-                files: { 'temp/vendor/bower_components.js': [
-                    'bower_components/jquery/dist/jquery.js',
-                    // 'bower_components/jquery/dist/jquery.min.js',
-                    'bower_components/underscore/underscore.js',
-                    // 'bower_components/underscore/underscore-min.js',
-                    'bower_components/backbone/backbone.js',
-                    // 'bower_components/backbone/backbone-min.js',
-                    // 'bower_components/rivets/dist/rivets.bundled.min.js'
-                ]}
-            },
             app: {
                 files: { 'local/scripts/app.js': [
                     _temp + '/vendor/bower_components.js',
@@ -106,19 +96,16 @@ module.exports = function(grunt) {
             html: {
                 files: [ _src + '/**/*.html'],
                 tasks: [ 'copy:views' ],
-                options: { livereload: true }
-            },
-            coffee: {
-                files: [ _src + '/scripts/*.coffee', _src + '/vendor/**/*' ],
-                tasks: [ 'compileJS' ]
+                // options: { livereload: true }
             },
             js: {
                 files: [ _src + '/scripts/**/*.js' ],
-                tasks: [ 'copy:local' ]
+                tasks: [ 'copy:scripts' ],
+                // options: { livereload: true }
             },
             less: {
                 files: [ _src + '/styles/**/*.less'],
-                tasks: ['less:dev']
+                tasks: [ 'less:dev' ]
             },
             // media: {
             //     files: [ _src + '/images/**/*', _src + '/**/*.js'],
@@ -138,27 +125,8 @@ module.exports = function(grunt) {
             }
         },
 
-        // Coffee compiles to: /scripts/*
-        coffee: {
-            dev: {
-                options: { 
-                    bare: true,
-                    join: true
-                },
-                files: { 'temp/scripts/app.js': [ 
-                    _src+'/scripts/helpers.coffee',
-                    _src+'/scripts/routes.coffee',
-                    _src+'/scripts/api.coffee',
-                    _src+'/scripts/ui.coffee',
-                    _src+'/scripts/app.coffee'
-                ]}
-            }
-        },
-
         shell: {
-            launchBrowser: {
-                command: 'open http://0.0.0.0:' + _port
-            }
+            launchBrowser: { command: 'open http://'+ _base +':'+ _port }
         }
     });
 
@@ -166,7 +134,6 @@ module.exports = function(grunt) {
     [
         'grunt-contrib-connect',
         'grunt-contrib-concat',
-        'grunt-contrib-coffee',
         'grunt-contrib-clean',
         'grunt-contrib-watch',
         'grunt-contrib-less',
@@ -177,23 +144,13 @@ module.exports = function(grunt) {
     ].map( grunt.loadNpmTasks );
 
     // Define our tasks
-    grunt.registerTask('build', [
+    grunt.registerTask( 'build', [
         'clean:all',
-        'copy:temp',
-        'less:dev',
-        'concat:bower',
-        'coffee:dev',
-        'concat:app',
         'copy:local',
+        'less:dev',
+        // 'concat:app',
+        // 'copy:local',
         // 'clean:temp'
-    ]);
-
-    grunt.registerTask( 'compileJS', [
-        'copy:temp',
-        'concat:bower',
-        'coffee:dev',
-        'concat:app',
-        'copy:local'
     ]);
 
     grunt.registerTask( 'server',  [

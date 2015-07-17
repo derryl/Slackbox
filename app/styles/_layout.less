@@ -4,16 +4,22 @@
 
 body {
     position: relative;
-    background: #333;
+    // background: #333;
     // border: 1px solid red;
-    min-height: 100vh;
+    // min-height: 100vh;
     padding: 1em;
     // width: 100vw;
     // overflow: hidden;
 }
 
+#container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
 
 #gallery {
+    position: relative;
+    // overflow: auto;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -21,31 +27,55 @@ body {
     // padding: 2rem;
     
     .thumb {
-        @thumbSize: 154px;
-        flex: 0 0 auto;
+        @thumbSize: 240px;
+        // flex: 0 0 auto;
         margin-bottom: 1rem;
         position: relative;
-        width: @thumbSize;
-        height: @thumbSize;
-        background: #eee;
-        border: 2px solid black;
+        width:  @thumbSize;
+        // height: @thumbSize;
+        // background: #eee;
+        padding: 0;
+        margin: 0 1rem 1rem;
+        // border: 2px solid black;
         border-radius: .25em;
         overflow: hidden;
         cursor: pointer;
         
         &:hover {
-            .label { opacity: 1; }
+            .metadata { opacity: 1; bottom: 0; }
         }
         
-        .label {
+        .thumb-img {
+            position: relative;
+        }
+        
+        img {
+            // max-width: 100%;
+            margin: 0;
             display: block;
-            opacity: 0;
+            width:  @thumbSize;
+            height: @thumbSize;
+        }
+        
+        .metadata {
+            color: @white;
+            .bold;
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            // bottom: 3px; left: 5px;
-            text-shadow: 0 2px 0 #000;
-            background: rgba(0,0,0,0.5);
-            padding: 5px;
+            bottom: -10px;
+            right: 0;
+            opacity: 0;
+            padding: 5px 10px;
+            transition: all 0.15s ease-out;
+        }
+        
+        .meta-icon {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .thumb-caption {
+            display: block;
+            padding: 5px 0;
         }
     }
 }
