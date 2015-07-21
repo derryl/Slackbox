@@ -1647,5 +1647,10 @@ function emoji(){}
     emoji.img_sets['google']['path'] = 'http://cdn.example.com/emoji/';
     emoji.img_sets['google']['sheet'] = 'http://cdn.example.com/emoji/sheet_google_64.png';
     */
-
+    
+    emoji.img_path = "/images/emoji/";
+    for (var set in emoji.img_sets) {
+        emoji.img_sets[set].path = "/images/emoji/";
+    };
+    
 });

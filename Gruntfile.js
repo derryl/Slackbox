@@ -91,7 +91,8 @@ module.exports = function(grunt) {
         // kick off a dev build and trigger LiveReload
         watch: {
             grunt: { 
-                files: ['Gruntfile.js']
+                files: ['Gruntfile.js'],
+                tasks: ['build']
             },
             html: {
                 files: [ _src + '/**/*.html'],

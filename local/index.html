@@ -6,63 +6,23 @@
         
         <link rel="stylesheet" href="styles/_loader.css">
         <link rel="stylesheet" href="styles/master.css">
-        <script src="scripts/dom.js"></script>
-        <script src="scripts/emoji.js"></script>
-        <script src="scripts/routes.js"></script>
+        <!-- <script src="scripts/dom.js"></script> -->
+        <!-- <script src="scripts/emoji.js"></script> -->
+        <!-- <script src="scripts/routes.js"></script> -->
         <script src="scripts/utilities.js"></script>
     </head>
     
-    <body class="loading">
+    <body>
+    <!-- <body class="loading"> -->
         
         <div id="container">
         
             <!-- Loading screen -->
-            <div class="loader">
-                <h1 id="loading-text">Loading</h1>
-            </div>
-            <script>
-                var Loader = function() {
-                
-                    var $$ = this;
-                
-                    var elSelector = '.loader';
-                    $$.loader = document.querySelector( elSelector );
-                    $$.loadingText = document.querySelector('#loading-text');
-                    $$.step = 0;
-                    $$.animationInterval = null;
-                    
-                    $$.show = function() {
-                        $(elSelector).removeClass('hidden');
-                        var step = 0;
-                        $$.animationInterval = window.setInterval( function() {
-                            if (step > 3) step = 0;
-                            $$.loadingText.setAttribute('class', 'step'+step);
-                            step++;
-                        }, 350);
-                        return $$;
-                    }
-                    
-                    $$.hide = function() {
-                        $(elSelector).addClass('hidden');
-                        clearInterval( $$.animationInterval )
-                        return $$;
-                    }
-                    
-                    $$.toggle = function() {
-                        $(elSelector).toggleClass('hidden');
-                    }
-                    
-                    return $$;
-                };
-                
-                window.loader = new Loader().show();
-                // setInterval( loader.toggle, 5000 );
-                
-            </script>
-
+            <!-- include "partials/loader.html" -->
             
             <!-- User Info -->
-            <div class="user-info hide" data-show-on-load>
+            <div class="user-info">
+            <!-- <div class="user-info hide" data-show-on-load> -->
                 <img data-src="profile_picture" />
                 <h1 data-text="username"></h1>
             </div>
@@ -134,8 +94,9 @@
             </div>
         </script>
         
+        <script data-main="/scripts/main" src="/scripts/require.js"></script>
+        <!-- <script src="scripts/app.js"></script> -->
         
-        <script src="scripts/app.js"></script>
     </body>
     
 </html>

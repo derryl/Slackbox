@@ -1,24 +1,38 @@
+
+// Useless function. Used as a "callback" when none is provided
+var emptyFunc = function(data) { return; };
+
+
+// Shorthand for console.log()
+window.log = console.log.bind(console);
+
+
+// String interpolation (courtesy of Douglas Crockford)
+String.prototype.supplant = function (o) { return this.replace(/{([^{}]*)}/g, function (a, b) {var r = o[b]; return typeof r === 'string' || typeof r === 'number' ? r : a; } ); };
+String.prototype.s = function (o) { return this.replace(/{([^{}]*)}/g, function (a, b) {var r = o[b]; return typeof r === 'string' || typeof r === 'number' ? r : a; } ); };
+
+
+// Allows safe retrieval of deeply-nested children from an object.
+// Returns the requested item (if it exists) otherwise returns undefined,
+// but without triggering an "Uncaught Type Error" :-)
 window.deep = function(obj) {
         
-    if (!obj) {
-        return undefined;
-    }
+    if (!obj) return undefined;
     
     // Fetch our list of arguments
     var args = Array.prototype.slice.call(arguments),
-        obj = args.shift();
+        obj  = args.shift();
     
     // If no arguments supplied, return the parent object
-    if (args.length < 1) {
+    if (args.length < 1) 
         return obj;
-    }
     
     // If arguments are supplied as a single, period-delimited string -- split them into an array
-    if (args.length === 1) {
+    if (args.length === 1)
         args = args[0].split('.');
-    }
         
-    var len = args.length, i = 0;
+    var len = args.length, 
+          i = 0;
     
     // Work our way down the object tree -- exiting safely if any node is undefined
     for (; i < len; i++) {
@@ -33,6 +47,7 @@ window.deep = function(obj) {
         if (i === len - 1) return obj;
     }
 };
+
 
 
 
