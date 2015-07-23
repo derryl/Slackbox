@@ -2,11 +2,12 @@ define([
         '$',
         'utilities',
         'api',
-        'binding',
         'emoji',
-        'views'
+        'views',
+        '_header',
+        '_gallery'
     ], 
-    function( $, Utils, API, DataBinder, emoji, View ) {
+    function( $, Utils, InstagramAPI, emoji, View, HeaderView, GalleryView ) {
     
         var config = {
             USE_FIXTURES:       true,
@@ -17,14 +18,22 @@ define([
             
         var initialize = function() {
             
-            var app = new View( '#container' );
             
-            var api = new API();
+            var API = new InstagramAPI(),
+                // MyApp  = new View( '#container' ),
+                Header  = new HeaderView( 'header' ),
+                Gallery = new GalleryView( '#gallery' );
             
             if ( config.USE_FIXTURES === true ) {
-                api.getFixture( '/fixtures/drryl-user.json', app.render );
+                
+                API.getFixture('/fixtures/drryl-user.json').then( function() { 
+                    Header.render( arguments[0] );
+                });
+                    
+                API.getFixture('/fixtures/drryl-feed.json').then( function() { 
+                    Gallery.render( arguments[0] );
+                });
             }
-            
             
             // window.app = new View( '#container', { username: 'Hello' });
             // var app2 = new View('body');

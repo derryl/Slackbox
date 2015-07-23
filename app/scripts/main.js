@@ -2,17 +2,23 @@ require.config({
     paths: {
         util: 'utilities',
         lightboxr: 'app',
-        $: 'dom',
-        emoji: 'emoji'
+        $: 'dom'
+        // emoji: 'emoji'
     },
     shim: {
-        'dom': { exports: '$' },
-        'emoji': { exports: 'emoji' }
+        // 'dom': { exports: '$' },
+        // 'emoji': { exports: 'emoji' }
     }
 });
 
-require([ 'lightboxr' ], function( Lightboxr ) {
+require(
+    [
+        'lightboxr',
+        'utilities'
+    ],
+    function( Lightboxr ) { 
+        
+        return Lightboxr.initialize()
     
-    Lightboxr.initialize();
-    
-});
+    }
+);

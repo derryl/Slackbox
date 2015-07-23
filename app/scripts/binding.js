@@ -1,16 +1,28 @@
+//
+//  - DataBinder -
+//
+//  A naive and brittle (yet effective) DOM binding utility. 
+//  Accepts a parent element, some data, and attempts
+//  to bind the provided data to that parent's child nodes.
+
 define( [], function() {
         
         function DataBinder( parent, data ) {
         
             var el = (parent instanceof Node) ? parent : document.querySelector( parent );
+            
             if (!el) return;
 
             var els = el.querySelectorAll('*');
             
             var bindingMap = {
-                'data-text': 'innerHTML',
-                'data-src': 'src'
-            }, bindingMapString = "";
+                'data-text':  'innerHTML',
+                'data-html':  'innerHTML',
+                'data-bind':  'innerHTML',
+                'data-src':   'src',
+                'data-href':  'href',
+                'data-value': 'value'
+            };
             
             // Check if an element has attributes
             function getAttrs( el ) {
@@ -25,20 +37,23 @@ define( [], function() {
                 return attributeMap;
             };
             
+            // Attempt to insert data, if the requested item exists
             function applyBinding( el, bindType ) {
-                if (!bindType || !bindingMap[bindType]) return;
-                var b = el.getAttribute( bindType );
-                if (b && deep(data, b)) {
-                    el[bindingMap[bindType]] = deep(data, b);
+                if (!bindType || !bindingMap[bindType]) return; // reject unidentified bindings   (e.g. data-foobar )
+                var b = el.getAttribute( bindType );            // determine the requested datum  (e.g. data-href=">> profile_url <<" )
+                if (b && deep(data, b)) {                       // attempt to retrieve that datum (e.g. >> data["profile_url"] <<)
+                    el[bindingMap[bindType]] = deep(data, b);   // if so, apply it to the element !
                 }
             };
             
             // Iterate over child nodes, and attempt to insert data
             // according to their bindings (e.g. 'data-text' -> replaces innerHTML)
             [].forEach.call( els, function(el) {
-                // console.log(el)
+                
+                // If current element has no data-* attributes, skip it
                 if (/data-/i.test(getAttrs( el ))) {
-                    // console.log('binding to',el);
+                    
+                    // Otherwise, iterate over our defined bindings and apply the data
                     Object.keys( bindingMap ).forEach( function( binding ) {
                         applyBinding( el, binding );
                     });
@@ -46,9 +61,8 @@ define( [], function() {
             });
             
             return data;
-              
         };
         
-        return DataBinder;
+        return( DataBinder );
     }
 );
