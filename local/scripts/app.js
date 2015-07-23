@@ -26,12 +26,14 @@ define([
             
             if ( config.USE_FIXTURES === true ) {
                 
-                API.getFixture('/fixtures/drryl-user.json').then( function() { 
-                    Header.render( arguments[0] );
+                API.getFixture('/fixtures/drryl-user.json').then( function(data) { 
+                    if (!data) return console.error('Problem fetching user data');
+                    Header.render( data );
                 });
                     
-                API.getFixture('/fixtures/drryl-feed.json').then( function() { 
-                    Gallery.render( arguments[0] );
+                API.getFixture('/fixtures/drryl-feed.json').then( function(data) { 
+                    if (!data) return console.error('Problem fetching user feed');
+                    Gallery.render( data.data );
                 });
             }
             

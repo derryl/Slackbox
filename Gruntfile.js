@@ -121,6 +121,14 @@ module.exports = function(grunt) {
                 files: [ _src + '/styles/**/*.less', _src + '/partials/**/*' ],
                 tasks: [ 'less:dev' ,'includes:html' ],
                 options: { livereload: true }
+            },
+            misc: {
+                files: [ 
+                    _src+'/fixtures/**/*',
+                    _src+'/fonts/**/*',
+                    _src+'/images/**/*',
+                ],
+                tasks: ['newer:copy:local']
             }
         },
 

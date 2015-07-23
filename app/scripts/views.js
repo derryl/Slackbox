@@ -11,17 +11,17 @@ define(
         
         function View( el, data ) {
             
-            this.element = (el instanceof Node) ? el : document.querySelector( el );
+            var $$ = this;
             
-            // log(el)
+            $$.element = (el instanceof Node) ? el : document.querySelector( el );
             
-            if (this.events && this.events.length > 0) {
-                this.listeners = new Listeners( this.events );
-            }
+            if (!$$.events) $$.events = [];
             
-            if (data) this.render( data );
+            $$.listeners = new Listeners( this, $$.events );
             
-            return( this );
+            if (data) $$.render( data );
+            
+            return( $$ );
             // return this.initialize( el, data );
         }
         
@@ -29,23 +29,12 @@ define(
             
             events: [ ],
             
-            // All views are initialized with a parent element
-            initialize: function( el, data ) {
-                var $$ = this;
-                
-                // Register our parent element (and make sure it's a 'Node')
-                $$.element = (el instanceof Node) ? el : document.querySelector( el );
-                
-                // Setup our listeners
-                if ($$.events && $$.events.length > 0) {
-                    $$.listeners = new Listeners( $$.events );
-                }
-                
-                // If we've got data, show it
-                if (data) $$.render( data );
-                
-                return $$;
-            },
+            // update: function( data, render ) {
+            //     var $$ = this;
+            //     if (!data) return;
+            //     $$.data = data;
+            //     return( (render) ? $$.render(data) : $$ );
+            // },
             
             render: function( data ) {
                 var $$ = this;
@@ -53,15 +42,29 @@ define(
                 if (!data) return;
                 
                 $$.data = data;
-                // log(data);
                 
                 Bind( $$.element, $$.data );
-                // log( 'binding data to', $$.element );
                 
                 return $$;
             },
             
+            bindListeners: function() {
+                var $$ = this;
+                if (!$$.events) return;
+                if (!$$.listeners) $$.listeners = new Listeners( this, $$.events );
+                
+                // log('binding listeners on', $$);
+                return $$.listeners.bind();
+            },
             
+            unbindListeners: function() {
+                var $$ = this;
+                if (!$$.events) return;
+                if (!$$.listeners) $$.listeners = new Listeners( this, $$.events );
+                
+                // log('binding listeners on', $$);
+                return $$.listeners.unbind();
+            }
         
         };
         

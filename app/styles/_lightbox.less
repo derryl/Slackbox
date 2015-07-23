@@ -28,31 +28,62 @@
         
         .lb-photo {
             display: flex;
+            flex: 0 1 auto;
+            flex-direction: column;
             position: relative;
-            align-items: center;
-            justify-content: space-around;
+            // align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            width: 100%;
+            padding: 1em;
         }
         
+        .lb-img, .lb-caption {
+            // width: 100%;
+        }
+        
+        .lb-img {
+            flex: 0 1 auto;
+            // min-width: 500px;
+            background: black;
+            // background-image: url(https://scontent.cdninstagram.com/hphotos-xpa1/t51.2885-15/s640x640/e35/sh0.08/1389173_1662611963971056_1288805771_n.jpg);
+            // border: 1px solid red;
+        }
+        
+        .lb-caption {
+            flex: 1 0 auto;
+            padding: 0.5em 0;
+            text-align: left;
+        }
         img {
-            display: inline-block;
-            flex: 0 1 640px;
+            margin: 0;
+            max-width: 100%;
+            max-height: 500px;
+            // display: inline-block;
+            // flex: 0 1 auto;
             // max-width: 100%;
-            margin: 0 auto;
-            max-height: 100%;
-            width: auto;
+            // margin: 0 auto;
+            // max-height: 100%;
+            // width: auto;
         }
         
-        .lb-photo,.rail {
+        .lb-caption {
+            // background: red;
+        }
+        
+        .lb-photo, .rail {
             // border: 1px solid red;
         }
         
         .rail {
             display: flex;
+            // flex: 0 0 auto;
             // flex-direction:
             // align-items: stretch;
             justify-content: center;
             &.left { margin-right: auto; }
             &.right { margin-left: auto; }
+            .arrow { margin-top: auto; margin-bottom: auto; }
         }
     }
     

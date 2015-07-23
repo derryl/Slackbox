@@ -3,11 +3,6 @@ require.config({
         util: 'utilities',
         lightboxr: 'app',
         $: 'dom'
-        // emoji: 'emoji'
-    },
-    shim: {
-        // 'dom': { exports: '$' },
-        // 'emoji': { exports: 'emoji' }
     }
 });
 
@@ -18,7 +13,7 @@ require(
     ],
     function( Lightboxr ) { 
         
-        return Lightboxr.initialize()
+        return Lightboxr.initialize();
     
     }
 );

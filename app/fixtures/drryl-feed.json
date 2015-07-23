@@ -1,11 +1,4 @@
 {
-    "pagination": {
-        "next_url": "https:\/\/api.instagram.com\/v1\/users\/11025817\/media\/recent?access_token=11025817.9b475cf.481ce3151a084e208f4fb8a579bcbcd2\u0026max_id=1008175490148387735_11025817",
-        "next_max_id": "1008175490148387735_11025817"
-    },
-    "meta": {
-        "code": 200
-    },
     "data": [{
         "attribution": null,
         "tags": [],

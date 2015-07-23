@@ -37,18 +37,28 @@
             </div>
             
             <!-- Feed -->
-            <div id="gallery" data-show-on-load></div>
+            <div id="gallery">
+                <img src="" alt="" id="test">
+                include "partials/thumbs.html"
+            </div>
             
             <!-- Lightbox for viewing individual photos -->
-            <div id="lightbox" class="lightbox hidden">
+            <div id="lightbox" class="lightbox">
+            <!-- <div id="lightbox" class="lightbox hidden"> -->
                 <div class="viewer">
                     <div class="left rail">
                         <a id="prevPhoto" href="javascript:void(0)" class="arrow left"></a>
                     </div>
                     <!-- <div class="lb-photo" style="background-image: url('<%= photo.fullsize.source %>')"> -->
                     <div class="lb-photo">
-                        <img data-src="images.standard_resolution.url" alt="">
-                        <!-- <div class="label"><%= photo.index %></div> -->
+                        <div class="lb-img">
+                            <img src="https://scontent.cdninstagram.com/hphotos-xpa1/t51.2885-15/s640x640/e35/sh0.08/1389173_1662611963971056_1288805771_n.jpg" alt="" width="auto"/>
+                        </div>
+                        <div class="lb-caption">
+                            <div class="label">New office 💻💰</div>
+                        </div>
+                        <!-- <img data-src="photo.images.standard_resolution.url" alt=""> -->
+                        <!-- <div class="label" data-text="photo.caption.text"></div> -->
                     </div>
                     <div class="right rail">
                         <a id="nextPhoto" href="javascript:void(0)" class="arrow right"></a>
@@ -59,23 +69,21 @@
         </div>
         
         
-        
-        
         <!-- Header -->
-        <script type="text/template" id="gallery-header">
+        <!-- <script type="text/template" id="gallery-header">
             <h1><a href="<%= set.href %>" target="_blank"><%= set.title %></a></h1>
             <h3><%= set.total %> photos • <%= set.ownername %></h3>
-        </script>
+        </script> -->
         
         <!-- Photo Thumbnail -->
-        <script type="text/template" id="photo-thumbnail">
+        <!-- <script type="text/template" id="photo-thumbnail">
             <span class="thumb">
                 <img src="<%= photo.thumbnail.source %>" 
                      alt="<%= photo.title %>"
                      data-index="<%= photo.index %>">
                 <span class="label"><%= photo.title %></span>
             </span>
-        </script>
+        </script> -->
         
         <!-- Lightbox Viewer -->
         <script type="text/template" id="lightbox-photo">

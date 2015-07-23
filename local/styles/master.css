@@ -607,16 +607,27 @@ body {
 }
 #lightbox .viewer .lb-photo {
   display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
   position: relative;
-  align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  background: #fff;
+  width: 100%;
+  padding: 1em;
+}
+#lightbox .viewer .lb-img {
+  flex: 0 1 auto;
+  background: black;
+}
+#lightbox .viewer .lb-caption {
+  flex: 1 0 auto;
+  padding: 0.5em 0;
+  text-align: left;
 }
 #lightbox .viewer img {
-  display: inline-block;
-  flex: 0 1 640px;
-  margin: 0 auto;
-  max-height: 100%;
-  width: auto;
+  margin: 0;
+  max-width: 100%;
+  max-height: 500px;
 }
 #lightbox .viewer .rail {
   display: flex;
@@ -627,6 +638,10 @@ body {
 }
 #lightbox .viewer .rail.right {
   margin-left: auto;
+}
+#lightbox .viewer .rail .arrow {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 #lightbox.hidden {
   display: none;
