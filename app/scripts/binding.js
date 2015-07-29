@@ -36,7 +36,7 @@ define( [], function() {
                 if (!el || !el.attributes) return;
                 
                 var attrs = el.attributes,
-                    attributeMap = '';
+                    attributeMap = [];
                     
                 if (attrs.length > 0) {
                     attributeMap = [].map.call( attrs, function( attr ) {
@@ -51,14 +51,23 @@ define( [], function() {
             
             // Attempt to insert data, if the requested item exists
             function applyBinding( el, bindType ) {
+                
                 if (!bindType) return;
-                var b = el.getAttribute( bindType );            // determine the requested datum  (e.g. data-href=">> profile_url <<" )
-                if (b && deep(data, b)) {                       // attempt to retrieve that datum (e.g. >> data["profile_url"] <<)
+                
+                // Get the requested datum's name (e.g. "user.username")
+                var b = el.getAttribute( bindType );
+                
+                // Then fetch it, if possible (e.g. "Derryl")
+                if (b && deep( data, b )) {
+                    
+                    // Check to see if we can bind this data directly ( e.g. Node.src )
                     if (bindingMap[bindType]) {
-                        el[bindingMap[bindType]] = deep(data, b);   // if so, apply it to the element !   
+                        el[bindingMap[bindType]] = deep(data, b);
+                    
+                    // Otherwise, just attach it as a [data-*] attribute.
                     } else {
                         var dataName = bindType.split( prefix ).join('');
-                        el.dataset[dataName] = deep(data, b);
+                        el.dataset[ dataName ] = deep( data, b );
                     }
                 }
             };
@@ -67,6 +76,7 @@ define( [], function() {
             // according to their bindings (e.g. 'data-text' -> replaces innerHTML)
             for (var i = 0; i < els.length; i++) {
                 
+                // Get the current Node
                 var el = els[i], repeater;
                 
                 // This function supports Angular-style iteration:
@@ -74,32 +84,47 @@ define( [], function() {
                 //
                 // In these cases, we duplicate the element the correct # of times,
                 // bind data to those new elements, and then delete the original.
-                if (repeater = el.getAttribute(prefix+'repeat')) {
+                if (repeater = el.getAttribute( prefix+'repeat' )) {
                     
+                    // Parse the "<item> in <collection>" instructions
                     var rep = repeater.split(' in ');
                     
                     try {
                         
-                        var itemTitle  = rep[0],
-                            collection = data[rep[1]] || data;
+                        var itemTitle  = rep[0],       // -> 'item'
+                            collection = data[rep[1]]; // -> 'collection'
+                        
+                        if (!collection) collection = data;
+                        
+                        // Iterate over the collection,
+                        // creating a duplicate Node for each item
+                        [].map.call( collection, function( data, i ) {
                             
-                        [].map.call( collection, function(data, i) {
-                            
+                            // Clone the original Node
                             var clone = el.cloneNode( true );
-                            clone.removeAttribute(prefix+'repeat');
-                                
-                            var newItem = el.parentNode.appendChild( clone ), itemData = {};
                             
-                            itemData[itemTitle] = data;
+                            // Remove the repeater. Otherwise it'd recur infinitely.
+                            clone.removeAttribute( prefix+'repeat' );
+                                
+                            var newItem = el.parentNode.appendChild( clone ),
+                                itemData = {};
+                            
+                            // Prepare a custom data object for each cloned Node,
+                            //--> { 'item': ... }
+                            itemData[ itemTitle ] = data;
+                            
+                            // Back to our regularly scheduled binding.
                             DataBinder( newItem, itemData );
                         });
                         
+                        // Get rid of the original Node.
                         el.parentNode.removeChild( el );
                         
                     } catch(e) { log(e) }
                 }
                 
                 // Get a list of all the bindable attributes on this element
+                //--> [ 'data-src', ... , 'data-alt' ]
                 var bindables = getBindableAttributes( el );
 
                 // Iterate over each binding and apply the data

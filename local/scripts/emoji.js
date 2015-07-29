@@ -1,3 +1,5 @@
+// This is a 3rd-party library to support showing Emojis
+
 ;(function(local_setup) {
 
 /**

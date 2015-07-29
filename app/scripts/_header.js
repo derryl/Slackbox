@@ -9,9 +9,6 @@ define(['views'], function( View ) {
     // HeaderView extends the base View class
     HeaderView.prototype = Object.create( View.prototype );
     
-    // Nothing here yet, might add some other functionality
-    // ....
-    
+    // No customizations here, Bind() is all we need
     return( HeaderView );
-    
 });

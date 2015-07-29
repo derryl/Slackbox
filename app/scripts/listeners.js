@@ -10,19 +10,34 @@ define( function() {
             
             // Add a new listener
             add: function( listener ) {
-                return( this.events.push( listener ) );
+                this.events.push( listener );
+                return( this );
             },
             
             // Remove a listener
             remove: function( listener ) {
-                
+                var i = this.events.indexOf( listener );
+                if ( i >= 0) this.events.splice( i, 1 );
+                return( this );
             },
             
             // Clear all listeners
             clear: function() {
-                return( this.events = new Array() );
+                this.events = new Array();
+                return( this );
             },
             
+            // Activate all listeners (e.g. when we show the lightbox)
+            bind: function( events ) {
+                return this.iterate( events, 'bind' );
+            },
+            
+            // Destroy all listeners (e.g. when we hide the lightbox)
+            unbind: function( events ) {
+                return this.iterate( events, 'unbind' );
+            },
+            
+            // This is used by 'bind' and 'unbind'
             iterate: function( events, action ) {
                 var $$ = this;
                 
@@ -55,21 +70,10 @@ define( function() {
                 });
                 
                 return $$;
-            },
-            
-            // Activate all listeners (e.g. when we show the lightbox)
-            bind: function( events ) {
-                return this.iterate( events, 'bind' );
-            },
-            
-            // Destroy all listeners (e.g. when we hide the lightbox)
-            unbind: function( events ) {
-                return this.iterate( events, 'unbind' );
             }
             
-        }
+        };
         
         return( Listeners );
-        
     }
 );

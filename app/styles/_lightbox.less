@@ -1,24 +1,29 @@
 // Lightbox
 #lightbox {
+    
     position: fixed;
     top: 0; left: 0;
+    
     height: 100vh;
     width:  100vw;
-    background: rgba(0,0,0,0.8);
+    
     display: flex;
     align-items: center;
     justify-content: center;
+    
+    background: @lb_backgroundColor;
     color: @darkGrey;
     
+    
+    // Container for the lightbox itself
     .viewer {
+        
         position: relative;
-        width: 85%;
+        
+        width:  95%;
         height: 90vh;
-        // height: 90vh;
-        // background-color: @white;
-        // padding: 1em;
-        // border-radius: 1em;
-        // flex: 1 1 auto;
+        max-height: 45em;
+
         display: flex;
         flex-direction: row;
         
@@ -31,43 +36,52 @@
             flex: 0 1 auto;
             flex-direction: column;
             position: relative;
+            max-width: 45em;
             // align-items: center;
             justify-content: space-between;
             background: #fff;
             width: 100%;
+            margin-bottom: auto;
+            margin-top: auto;
             padding: 1em;
-        }
-        
-        .lb-img, .lb-caption {
-            // width: 100%;
+            
+            .rounded(5px);
         }
         
         .lb-img {
-            flex: 0 1 auto;
-            // min-width: 500px;
-            background: black;
-            // background-image: url(https://scontent.cdninstagram.com/hphotos-xpa1/t51.2885-15/s640x640/e35/sh0.08/1389173_1662611963971056_1288805771_n.jpg);
-            // border: 1px solid red;
-        }
+            flex: 0 1 auto }
+            img {
+                margin: 0;
+                max-width: 100%;
+                max-height: 500px;
+                .rounded(2px) }
         
         .lb-caption {
             flex: 1 0 auto;
             padding: 0.5em 0;
             text-align: left;
-        }
-        img {
-            margin: 0;
-            max-width: 100%;
-            max-height: 500px;
-            // display: inline-block;
-            // flex: 0 1 auto;
-            // max-width: 100%;
-            // margin: 0 auto;
-            // max-height: 100%;
-            // width: auto;
+            min-width: 12em }
+        
+        .user-meta {
+            .clearfix;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1em;
+            margin-bottom: 1em;
+            .um--photo, .um--username {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .um--photo {
+                height: 1.8em;
+                .rounded;
+            }
+            .um--username {
+                .bold;
+            }
         }
         
         .lb-caption {
+            font-size: 0.9em;
             // background: red;
         }
         
@@ -76,14 +90,58 @@
         }
         
         .rail {
+            // .db;
             display: flex;
-            // flex: 0 0 auto;
-            // flex-direction:
-            // align-items: stretch;
-            justify-content: center;
-            &.left { margin-right: auto; }
-            &.right { margin-left: auto; }
-            .arrow { margin-top: auto; margin-bottom: auto; }
+            flex: 1 0 auto;
+            padding: 0 1.5em;
+            cursor: pointer;
+            
+            &.left  { 
+                margin-right: auto;
+                .arrow { margin-left: auto; }
+            }
+            
+            &.right { 
+                margin-left: auto;
+                .arrow { margin-right: auto; }
+            }
+            
+            .arrow { 
+                opacity: 0.2;
+                margin-top: auto;
+                margin-bottom: auto;
+                transition: opacity 0.25s ease-out;
+            }
+            &:hover .arrow { 
+                opacity: 1;
+                transition: opacity 0.05s ease-out;
+            }
+        }
+        
+        @media @largerScreens {
+            
+            .lb-photo {
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            
+            .lb-img, .lb-caption {
+                // flex: 1 1 auto;
+            }
+            
+            .lb-img {
+                flex: 0 0 63%;
+            }
+            
+            .lb-caption {
+                flex: 0 0 36%;
+                padding-left: 1em;
+            }
+        }
+        
+        @media @baby {
+            .lb-photo { max-width: 90vw; .db }
+            .rail { display: none; }
         }
     }
     
@@ -91,16 +149,21 @@
 }
 
 .arrow {
-    display: inline-block;
+    @arrowSize: 3.5em;
+    display: block;
     position: relative;
-    width: 3em;
-    height: 3em;
-    // height: 100%;
+    width: @arrowSize;
+    height: @arrowSize;
+    // .db(green);
+    
     background-color: rgba(255,255,255,0.5);
     background-image: url('/images/arrow-up-c.svg');
-    background-size: auto 100%;
+    background-position: center center;
+    background-size: auto (@arrowSize * 0.85);
     background-repeat: none;
     
-    &.right { .rotate(90deg) }
-    &.left { .rotate(-90deg) }
+    &.right { .rotate(90deg)  }
+    &.left  { .rotate(-90deg) }
+    
+    .rounded;
 }

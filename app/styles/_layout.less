@@ -4,27 +4,45 @@
 
 body {
     position: relative;
-    // background: #333;
-    // border: 1px solid red;
-    // min-height: 100vh;
-    padding: 1em;
-    // width: 100vw;
-    // overflow: hidden;
+    padding: 0;
+}
+
+.hide {
+    display: none;
 }
 
 #container {
     margin: 0 auto;
-    max-width: 1200px;
+    max-width: @maxContentWidth;
     z-index: 1;
 }
-
 
 .user-info {
     text-align: center;
     
-    padding-bottom: 2em;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid @borderColor;
     margin-bottom: 3em;
     
-    img { border-radius: 100%; }
+    .ui--user {
+        .clearfix;
+    }
+    
+    img { 
+        height: 7em;
+        border-radius: 100%;
+    }
+    
+    .user-counts {
+        span { display: inline-block; }
+        span:not(:last-child):after {
+            display: inline-block;
+            content: '•';
+            margin: 0 .5em;
+            color: @borderColor;
+            // opacity: 0.5;
+            // font-size: 0.5em;
+            // vertical-align: middle;
+        }
+    }
 }

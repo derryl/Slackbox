@@ -1,20 +1,18 @@
-
-// Useless function. Used as a "callback" when none is provided
-var emptyFunc = function(data) { return; };
-
+// Empty function. Used as a 'callback' when none is provided
+var emptyFunc = function() { return; };
 
 // Shorthand for console.log()
 window.log = console.log.bind(console);
-
 
 // String interpolation (courtesy of Douglas Crockford)
 String.prototype.supplant = function (o) { return this.replace(/{([^{}]*)}/g, function (a, b) {var r = o[b]; return typeof r === 'string' || typeof r === 'number' ? r : a; } ); };
 String.prototype.s = function (o) { return this.replace(/{([^{}]*)}/g, function (a, b) {var r = o[b]; return typeof r === 'string' || typeof r === 'number' ? r : a; } ); };
 
-
-// Allows safe retrieval of deeply-nested children from an object.
-// Returns the requested item (if it exists) otherwise returns undefined,
-// but without triggering an "Uncaught Type Error" :-)
+// deep() is one of my favorite tools.
+// It allows safe retrieval of deeply-nested children from an object.
+// Returns the requested item (if it exists), otherwise returns undefined,
+// but without triggering an "Uncaught Type Error".
+//  Usage: deep( item, 'deeply.nested.value' )
 window.deep = function(obj) {
         
     if (!obj) return undefined;
@@ -50,7 +48,7 @@ window.deep = function(obj) {
 
 
 
-
+// Useful. Should be part of the spec, but it's not.
 Node.prototype.isChildOf = function( parent ) {
     
     var target = this;

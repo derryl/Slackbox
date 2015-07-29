@@ -5,53 +5,98 @@ define([
         'emoji',
         'views',
         '_header',
-        '_gallery'
+        '_gallery',
+        '_authenticationDialog'
     ], 
-    function( $, Utils, InstagramAPI, emoji, View, HeaderView, GalleryView ) {
-    
-        var config = {
-            USE_FIXTURES:       true,
-            DEFAULT_USER_ID:    11025817,
-            ALLOW_CAT_PHOTOS:   true,
-            ALLOW_SELFIES:      false
-        };
+    function( $, Utils, InstagramAPI, emoji, View, HeaderView, GalleryView, AuthBox ) {
+        
+        function App( config ) {
             
-        var initialize = function() {
+            this.config = config || { DEFAULT_USER_ID: 11025817 };
             
+            window.Global = {
+                provide: function(data) {
+                    log(data);
+                }
+            };
             
-            var API = new InstagramAPI(),
-                // MyApp  = new View( '#container' ),
-                Header  = new HeaderView( 'header' ),
-                Gallery = new GalleryView( '#gallery' );
+            return this;
+        }
+        
+        App.prototype = {
             
-            if ( config.USE_FIXTURES === true ) {
+            initialize: function( ) {
                 
-                API.getFixture('/fixtures/drryl-user.json').then( function(data) { 
-                    if (!data) return console.error('Problem fetching user data');
-                    Header.render( data );
-                });
+                var $$ = this;
+                
+                // All my children ...
+                $$.AuthBox = new AuthBox( '#authBox' );
+                $$.API     = new InstagramAPI({ app: $$, callbackPrefix: 'Lightbox.' });
+                $$.Header  = new HeaderView( 'header' );
+                $$.Gallery = new GalleryView( '#gallery' );
+                
+                window.states = [];
+                
+                // We need an API token to make requests.
+                // These don't expire, but we check every time to be sure.
+                if ( !$$.API.getToken() ) {
                     
-                API.getFixture('/fixtures/drryl-feed.json').then( function(data) { 
-                    if (!data) return console.error('Problem fetching user feed');
-                    Gallery.render( data.data );
+                    $$.AuthBox.show();
+                    return false;
+                    
+                } else {
+                    
+                    $$.AuthBox.hide();
+                    
+                    $$.API.getUserInfo( $$.config.DEFAULT_USER_ID, 'Header.render' );
+                    
+                    $$.API.getUserFeed( $$.config.DEFAULT_USER_ID, 'Gallery.render' );
+                    // var foo = function( x ) { log(x) };
+                    // $$.API.getJSONP( 'foo' );
+                    
+                    // $$.search('foobar');
+                    
+                }
+                
+                // Return a proper 'this'
+                return( $$ );
+            },
+            
+            ingest: function( data ) {
+                log(data);
+            },
+            
+            loadUser: function( id ) {
+                
+            },
+            
+            // showAuthBox: function()
+            
+            search: function( q ) {
+                var $$ = this;
+                return $$.API.getSearchResults( q ).then( function(data) {
+                    console.log( data );
                 });
             }
             
-            // window.app = new View( '#container', { username: 'Hello' });
-            // var app2 = new View('body');
-            
-            // console.log(app1);
-            // console.log(DataBinder)
-            
-            // DataBinder('.user-info', { username: 'Hello' });
-            
-            // app1.render();
-            // app2.render();
-            
         };
+            
+        // if ( config.USE_FIXTURES === true ) {
+            
+        //     API.getFixture('/fixtures/drryl-user.json').then( function(data) { 
+        //         if (!data) return console.error('Problem fetching user data');
+        //         Header.render( data );
+        //     });
+                
+        //     API.getFixture('/fixtures/drryl-feed.json').then( function(data) { 
+        //         if (!data) return console.error('Problem fetching user feed');
+        //         Gallery.render( data.data );
+        //     });
+            
+        // } else {
+            
+        // }
 
-        return {
-            initialize: initialize
-        };
+        return( App );
     }
 );

@@ -6,7 +6,9 @@ define(['$','binding','views'], function( $, Bind, View ) {
         var $$ = this;
         
         $$.events = [
-            [ document.body, 'keyup', 'keyHandler' ]
+            [ document.body, 'keyup', 'keyHandler' ],
+            [ '#nextPhoto',  'click', 'nextPhoto' ],
+            [ '#prevPhoto',  'click', 'prevPhoto' ]
         ];
         
         View.call( $$, el, data );
@@ -73,16 +75,6 @@ define(['$','binding','views'], function( $, Bind, View ) {
 
     // LightboxView extends the base View class
     LightboxView.prototype = Object.create( View.prototype );
-    
-    // LightboxView.prototype.render = function(data) {
-        
-    //     // Bind( this.element, data );
-        
-    //     return this;
-    //     // return View.render.call( this, data );
-    // };
-    // Nothing here yet, might add some other functionality
-    // ....
     
     return( LightboxView );
     

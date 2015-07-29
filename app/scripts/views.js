@@ -39,10 +39,13 @@ define(
             render: function( data ) {
                 var $$ = this;
                 
+                // If no data, do nothing
                 if (!data) return;
                 
-                $$.data = data;
+                // Either use the raw JSON, or use the 'data' object, if it exists
+                $$.data = (data.data) ? data.data : data;
                 
+                // Bind the data to our element
                 Bind( $$.element, $$.data );
                 
                 return $$;
@@ -64,6 +67,14 @@ define(
                 
                 // log('binding listeners on', $$);
                 return $$.listeners.unbind();
+            },
+            
+            show: function() {
+                return $( this.element ).removeClass('hide');
+            },
+            
+            hide: function() {
+                return $( this.element ).addClass('hide');
             }
         
         };
