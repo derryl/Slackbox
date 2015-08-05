@@ -5,14 +5,54 @@
     height: 100vh;
     width:  100vw;
     
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .flexbox();
+    .align-items(center);
+    .justify-content(center);
     
     background: @lb_backgroundColor;
     color: @darkGrey;
     z-index: 100;
 }
+
+.user-info {
+    text-align: center;
+    
+    padding: @defaultPadding;
+    border-bottom: 1px solid @borderColor;
+    // margin-bottom: @defaultPadding;
+    
+    .ui--user {
+        .clearfix;
+    }
+    
+    img { 
+        height: 7em;
+        border-radius: 100%;
+    }
+    
+    h1 {
+        margin: 0.2em 0 0;
+    }
+    
+    .user-counts {
+        margin: .5em 0 0;
+        span { display: inline-block; }
+        span:not(:last-child):after {
+            display: inline-block;
+            content: '•';
+            margin: 0 .5em;
+            color: @borderColor;
+            // opacity: 0.5;
+            // font-size: 0.5em;
+            // vertical-align: middle;
+        }
+    }
+    
+    @media @child {
+        font-size: 80%;
+    }
+}
+
 
 .auth-box {
     @width: 25em;

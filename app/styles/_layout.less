@@ -11,38 +11,12 @@ body {
     display: none;
 }
 
+img {
+    background: #eee;
+}
+
 #container {
     margin: 0 auto;
     max-width: @maxContentWidth;
     z-index: 1;
-}
-
-.user-info {
-    text-align: center;
-    
-    padding-bottom: 1.5em;
-    border-bottom: 1px solid @borderColor;
-    margin-bottom: 3em;
-    
-    .ui--user {
-        .clearfix;
-    }
-    
-    img { 
-        height: 7em;
-        border-radius: 100%;
-    }
-    
-    .user-counts {
-        span { display: inline-block; }
-        span:not(:last-child):after {
-            display: inline-block;
-            content: '•';
-            margin: 0 .5em;
-            color: @borderColor;
-            // opacity: 0.5;
-            // font-size: 0.5em;
-            // vertical-align: middle;
-        }
-    }
 }

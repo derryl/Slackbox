@@ -78,14 +78,14 @@ module.exports = function(grunt) {
             }
         },
 
-        concat: {
-            app: {
-                files: { 'local/scripts/app.js': [
-                    _temp + '/vendor/bower_components.js',
-                    _temp + '/scripts/app.js',
-                ]}
-            }
-        },
+        // concat: {
+        //     app: {
+        //         files: { 'local/scripts/app.js': [
+        //             _temp + '/vendor/bower_components.js',
+        //             _temp + '/scripts/app.js',
+        //         ]}
+        //     }
+        // },
 
         // Whenever a source file changes,
         // kick off a dev build and trigger LiveReload
@@ -108,18 +108,13 @@ module.exports = function(grunt) {
                 files: [ _src + '/styles/**/*.less'],
                 tasks: [ 'less:dev' ]
             },
-            // media: {
-            //     files: [ _src + '/images/**/*', _src + '/**/*.js'],
-            //     tasks: [ 'newer:copy:local' ],
-            //     options: { livereload: true }
-            // },
             local: {
                 files: [ _local + '/**/*' ],
                 options: { livereload: true }
             },
             localHTML: {
-                files: [ _src + '/styles/**/*.less', _src + '/partials/**/*' ],
-                tasks: [ 'less:dev' ,'includes:html' ],
+                files: [ _src + '/partials/**/*' ],
+                tasks: [ 'includes:html' ],
                 options: { livereload: true }
             },
             misc: {
@@ -137,7 +132,7 @@ module.exports = function(grunt) {
             dev: {
                 files: [
                     { 'local/styles/master.css': 'app/styles/master.less' },
-                    { 'local/styles/_loader.css': 'app/styles/___loader.less' }
+                    // { 'local/styles/_loader.css': 'app/styles/___loader.less' }
                 ]
             }
         },
@@ -147,6 +142,7 @@ module.exports = function(grunt) {
                 options: {
                     includeRegExp: /^\/\/\s*include\s+['"]?([^'"]+)['"]?\s*$/,
                     duplicates: false,
+                    includePath: _local + '/views/partials',
                     // debug: true,
                     silent: true
                 },

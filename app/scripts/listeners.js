@@ -57,7 +57,6 @@ define( function() {
                         
                         try {
                             if ( action === 'bind' ) {
-                                // log('binding',eventHandler,'to',target);
                                 target.addEventListener( eventType, function(e) { $$.view[eventHandler](e) });
                             } else {
                                 target.removeEventListener( eventType, function(e) { $$.view[eventHandler](e) });

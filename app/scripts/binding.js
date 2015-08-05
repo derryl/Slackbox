@@ -1,21 +1,34 @@
-//
+
 //  - DataBinder -
 //
-//  A naive and brittle (yet effective) DOM binding utility. 
-//  Accepts a parent element, some data, and attempts
+//  A naive and brittle (yet effective) DOM binding utility I wrote for this. 
+//  It accepts a parent element, some data, and attempts
 //  to bind the provided data to that parent's child nodes.
+
+// Basic usage:
+//    HTML:  <h1 data-text="username"></h1>
+//    JS:    Bind( 'h1', { username: ' drryl ' })  --->  <h1 data-text="username"> drryl </h1>
+
+//  TODO: Add the ability to re-bind data on "repeated" elements.
+//        Presently, I can't modify the data, because I'm deleting the original element.
 
 define( [], function() {
         
         function DataBinder( parent, data ) {
-        
+            
+            // Make sure the subject is a Node element
             var el = (parent instanceof Node) ? parent : document.querySelector( parent );
             
             if (!el) return;
 
-            var els = el.querySelectorAll('*'),
-                prefix = 'data-';
+            // Get all the children
+            var els = el.querySelectorAll('*');
             
+            // Set a prefix for data-bindings (e.g. Angular uses "ng-", Rivets uses "rv-", etc.)
+            var prefix = 'data-';
+            
+            // TODO: Remove the need for prefixed attributes, and just replace
+            // anything we find... I'm not sure why I decided on this strict mapping system.
             var bindingMap = {},
                 bindings = {
                     'text':  'innerHTML',
@@ -24,9 +37,12 @@ define( [], function() {
                     'src':   'src',
                     'href':  'href',
                     'value': 'value',
+                    'title': 'title',
                     'background': 'style|background-image: url("{item}")'
                 };
             
+            // Using our prefix and supplied bindings ^ create a 'bindingMap'
+            // to detect bindable attributes on DOM elements.
             Object.keys( bindings ).forEach( function(b) {
                 bindingMap[ prefix + b ] = bindings[b];
             });
@@ -49,28 +65,43 @@ define( [], function() {
                 return attributeMap;
             };
             
+            
             // Attempt to insert data, if the requested item exists
+                // TODO: add support for pre-loading <img> tags
+                // (wait for image to load before applying the binding)
             function applyBinding( el, bindType ) {
                 
                 if (!bindType) return;
                 
                 // Get the requested datum's name (e.g. "user.username")
                 var b = el.getAttribute( bindType );
+                // console.log(b);
                 
                 // Then fetch it, if possible (e.g. "Derryl")
                 if (b && deep( data, b )) {
                     
                     // Check to see if we can bind this data directly ( e.g. Node.src )
                     if (bindingMap[bindType]) {
+                        
                         el[bindingMap[bindType]] = deep(data, b);
+                        // console.log(el[bindingMap[bindType]]);
                     
                     // Otherwise, just attach it as a [data-*] attribute.
                     } else {
                         var dataName = bindType.split( prefix ).join('');
                         el.dataset[ dataName ] = deep( data, b );
                     }
+                
+                // Last-minute hack: allow replacement of attributes like:
+                //      data-href="http://www.foo.com/{data}" 
+                // TODO: Improve the entire module to functione more like this
+                } else if (/{([^{}]*)}/i.test(b)) {
+                    
+                    el[bindingMap[bindType]] = b.supplant( data );
+                    
                 }
             };
+            
             
             // Iterate over child nodes, and attempt to insert data
             // according to their bindings (e.g. 'data-text' -> replaces innerHTML)
@@ -84,6 +115,8 @@ define( [], function() {
                 //
                 // In these cases, we duplicate the element the correct # of times,
                 // bind data to those new elements, and then delete the original.
+                
+                // TODO: Fix this so it's possible to bind more than once.
                 if (repeater = el.getAttribute( prefix+'repeat' )) {
                     
                     // Parse the "<item> in <collection>" instructions
@@ -133,7 +166,6 @@ define( [], function() {
                 });
                 
             };
-            
             
             return data;
         };

@@ -15,6 +15,10 @@ define(
             
             $$.element = (el instanceof Node) ? el : document.querySelector( el );
             
+            this.$el = $( $$.element );
+            
+            $$.isVisible = $( $$.element ).hasClass( 'hide' );
+            
             if (!$$.events) $$.events = [];
             
             $$.listeners = new Listeners( this, $$.events );
@@ -29,19 +33,12 @@ define(
             
             events: [ ],
             
-            // update: function( data, render ) {
-            //     var $$ = this;
-            //     if (!data) return;
-            //     $$.data = data;
-            //     return( (render) ? $$.render(data) : $$ );
-            // },
-            
             render: function( data ) {
                 var $$ = this;
                 
                 // If no data, do nothing
-                if (!data) return;
-                
+                if (!data || data.isEmpty()) return;
+
                 // Either use the raw JSON, or use the 'data' object, if it exists
                 $$.data = (data.data) ? data.data : data;
                 
@@ -56,7 +53,6 @@ define(
                 if (!$$.events) return;
                 if (!$$.listeners) $$.listeners = new Listeners( this, $$.events );
                 
-                // log('binding listeners on', $$);
                 return $$.listeners.bind();
             },
             
@@ -65,16 +61,24 @@ define(
                 if (!$$.events) return;
                 if (!$$.listeners) $$.listeners = new Listeners( this, $$.events );
                 
-                // log('binding listeners on', $$);
                 return $$.listeners.unbind();
             },
             
             show: function() {
-                return $( this.element ).removeClass('hide');
+                $hidden = false;
+                return $( this.element ).removeClass('hide')
             },
             
             hide: function() {
+                $hidden = true;
                 return $( this.element ).addClass('hide');
+            },
+            
+            isVisible: function() {
+                return $( this.element ).hasClass('hide');
+            },
+            isHidden: function() {
+                return !( this.isVisible() );
             }
         
         };

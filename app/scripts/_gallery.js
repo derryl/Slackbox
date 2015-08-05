@@ -5,14 +5,16 @@ define(['views','binding','_lightbox'], function( View, Bind, Lightbox ) {
         
         var $$ = this;
         
+        // The Lightbox is a child of Gallery
         $$.lightbox = new Lightbox('#lightbox');
         
+        // Pass-thru function to show a photo in Lightbox upon click
         $$.viewPhoto = function( e ) {
             return $$.lightbox.viewPhoto( e.target.dataset.index );
         };
         
         $$.events = [
-            [ 'span.thumb', 'click', 'viewPhoto' ]
+            [ '.thumb', 'click', 'viewPhoto' ]
         ];
         
         return View.call( $$, el, data );
@@ -29,6 +31,7 @@ define(['views','binding','_lightbox'], function( View, Bind, Lightbox ) {
     GalleryView.prototype.render = function(data) {
         var $$ = this;
         
+        // No data? No party.
         if (!data) return;
         if (data.data) data = data.data;
         
@@ -39,10 +42,13 @@ define(['views','binding','_lightbox'], function( View, Bind, Lightbox ) {
             photo.index = (i + 1);
         });
         
+        // Pass these new photos to our Lightbox view
         $$.lightbox.updatePhotos( $$.data );
         
+        // Draw the thumbnails on-screen
         Bind( $$.element, $$.data );
         
+        // Listen for clicks
         $$.bindListeners();
         
         return $$;

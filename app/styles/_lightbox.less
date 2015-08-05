@@ -7,9 +7,9 @@
     height: 100vh;
     width:  100vw;
     
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .flexbox();
+    .align-items(center);
+    .justify-content(center);
     
     background: @lb_backgroundColor;
     color: @darkGrey;
@@ -17,50 +17,49 @@
     
     // Container for the lightbox itself
     .viewer {
-        
         position: relative;
-        
-        width:  95%;
-        height: 90vh;
         max-height: 45em;
-
-        display: flex;
-        flex-direction: row;
+        .flexbox(row);
         
         #closeLightbox {
-            flex: 0 0 auto;
+            .flex(0, 0, auto);
         }
         
         .lb-photo {
-            display: flex;
-            flex: 0 1 auto;
-            flex-direction: column;
             position: relative;
-            max-width: 45em;
-            // align-items: center;
-            justify-content: space-between;
-            background: #fff;
+            
+            .flexbox(column);
+            .justify-content(space-between);
+            .flex(0, 1, auto);
+            
             width: 100%;
+            max-width: 45em;
+            
             margin-bottom: auto;
             margin-top: auto;
             padding: 1em;
+            
+            background: #fff;
             
             .rounded(5px);
         }
         
         .lb-img {
-            flex: 0 1 auto }
+            .flex(0, 1, auto);
+        }
             img {
                 margin: 0;
                 max-width: 100%;
                 max-height: 500px;
-                .rounded(2px) }
+                .rounded(2px) 
+            }
         
         .lb-caption {
-            flex: 1 0 auto;
+            .flex(1, 0, auto);
             padding: 0.5em 0;
             text-align: left;
-            min-width: 12em }
+            min-width: 12em
+        }
         
         .user-meta {
             .clearfix;
@@ -91,8 +90,8 @@
         
         .rail {
             // .db;
-            display: flex;
-            flex: 1 0 auto;
+            .flexbox();
+            .flex(1, 0, auto);
             padding: 0 1.5em;
             cursor: pointer;
             
@@ -121,40 +120,35 @@
         @media @largerScreens {
             
             .lb-photo {
-                flex-direction: row;
-                flex-wrap: nowrap;
-            }
-            
-            .lb-img, .lb-caption {
-                // flex: 1 1 auto;
+                .flexbox(row);
+                .flex-wrap(nowrap);
             }
             
             .lb-img {
-                flex: 0 0 63%;
+                .flex(0, 0, 63%);
             }
             
             .lb-caption {
-                flex: 0 0 36%;
+                .flex(0, 0, 36%);
                 padding-left: 1em;
             }
         }
         
         @media @baby {
-            .lb-photo { max-width: 90vw; .db }
+            .lb-photo { max-width: 90vw; }
             .rail { display: none; }
         }
     }
-    
-    &.hidden { display: none }
 }
 
+
+// Next / Previous arrows
 .arrow {
     @arrowSize: 3.5em;
     display: block;
     position: relative;
     width: @arrowSize;
     height: @arrowSize;
-    // .db(green);
     
     background-color: rgba(255,255,255,0.5);
     background-image: url('/images/arrow-up-c.svg');

@@ -2,7 +2,14 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>Lightboxr</title>
+        <link rel="shortcut icon" href="favicon.ico">
+        <meta name="author" content="Derryl Carter" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <meta name="apple-touch-fullscreen" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+
+        <title>Slackbox</title>
         <link rel="stylesheet" href="styles/master.css">
     </head>
     
@@ -10,34 +17,28 @@
         
         <div id="container">
         
-            <!-- Loading screen -->
-            <!-- include "partials/loader.html" -->
+            <!-- = Unused = -->
+            <!-- include "search.html" -->
+            <!-- include "loader.html" -->
             
             <!-- User Info -->
-            <header>
-                include "partials/header.html"
-            </header>
+            include "header.html"
             
-            <!-- Feed -->
-            <div id="gallery">
-                include "partials/thumbs.html"
-            </div>
-            
-            <!-- Lightbox for viewing individual photos -->
-            <div id="lightbox" class="lightbox hidden">
-                include "partials/photoViewer.html"
-            </div>
-            
+            <!-- Thumbnails -->
+            include "gallery.html"
+
         </div>
         
-        <!-- Modal dialog for obtaining user authentication -->
-        <div id="authBox" class="backdrop hide">
-            include "partials/authBox.html"
-        </div>
+        <!-- Lightbox (for viewing individual photos) -->
+        include "lightbox.html"
+        
+        <!-- Authentication dialog (for obtaining an API access token) -->
+        include "authBox.html"
+
 
         <!--==============================================================-->
         <script data-main="/scripts/main" src="/scripts/require.js"></script>
         <!--==============================================================-->
+        
     </body>
-    
 </html>

@@ -156,3 +156,43 @@
     -ms-transform-origin:     @x @y;
     -o-transform-origin:      @x @y;
 }
+
+
+
+// Flexbox
+.flexbox(@direction: column) {
+  -webkit-display: flex;
+  display: flex;
+  -webkit-flex-direction: @direction;
+  flex-direction: @direction;
+}
+
+.flex(@grow: 1, @shrink: 1, @defaultSize: auto) {
+  -webkit-flex: @grow @shrink @defaultSize;
+  flex: @grow @shrink @defaultSize;
+}
+
+.flex-basis(@basis: auto) {
+    -webkit-flex-basis: @basis;
+    flex-basis: @basis;
+}
+
+.justify-content(@justification: center) {
+  -webkit-justify-content: @justification;
+  justify-content: @justification;
+}
+
+.align-items(@alignment: center) {
+  -webkit-align-items: @alignment;
+  align-items: @alignment;
+}
+
+.align-content(@alignment: center) {
+  -webkit-align-content: @alignment;
+  align-content: @alignment;
+}
+
+.flex-wrap(@wrap: nowrap) {
+  -webkit-flex-wrap: @wrap;
+  flex-wrap: @wrap;
+}
