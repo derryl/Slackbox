@@ -47,6 +47,7 @@ define( [], function() {
                 bindingMap[ prefix + b ] = bindings[b];
             });
             
+            
             // Check if an element has attributes
             function getBindableAttributes( el ) {
                 if (!el || !el.attributes) return;

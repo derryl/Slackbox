@@ -25,19 +25,14 @@
             <header>
 
                 <div class="user-info">
-                
-                    <!-- 
-                        id, username, full_name, bio, website
-                    -->
 
                     <div class="ui--user">
-                    
                         <!-- User: Profile photo -->
                         <img data-src="profile_picture" />
                         
                         <!-- User: Username -->
                         <h1>
-                            <a data-href="http://www.instagram.com/{username}"
+                            <a data-href="https://instagram.com/{username}"
                                data-text="@{username}" 
                                target="_blank">&nbsp;</a>
                         </h1>
@@ -96,8 +91,12 @@
                     
                         <!-- Photo: Who posted it -->
                         <figure class="user-meta">
-                            <img data-src="photo.user.profile_picture" class="um--photo">
-                            <figcaption class="um--username" data-text="photo.user.username">drryl</figcaption>
+                            <img class="um--photo" data-src="photo.user.profile_picture">
+                            <figcaption class="um--username">
+                                <a data-href="https://instagram.com/{photo.user.username}"
+                                   data-text="photo.user.username" 
+                                   target="_blank">&nbsp;</a>
+                            </figcaption>
                         </figure>
                         
                         <!-- Photo: Caption -->
