@@ -1,5 +1,5 @@
 // Full page loader
-define(['$','binding','Views'], function( $, Bind, View ) {
+define(['$','binding','views'], function( $, Bind, View ) {
 
     function PageLoader( el ) {
         

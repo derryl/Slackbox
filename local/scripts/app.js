@@ -3,7 +3,7 @@ define([
         'utilities',
         'api',
         'emoji',
-        'Views',
+        'views',
         '_loader',
         '_header',
         '_gallery',

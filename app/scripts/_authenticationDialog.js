@@ -1,6 +1,6 @@
 
 // Authentication dialog box
-define(['Views'], function( View ) {
+define(['views'], function( View ) {
 
     function AuthBox( el, data ) {
         return View.call( this, el, data );

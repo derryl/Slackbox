@@ -1,5 +1,5 @@
 // Searching for new users
-define(['$','binding','Views'], function( $, Bind, View ) {
+define(['$','binding','views'], function( $, Bind, View ) {
 
     function SearchBox( el ) {
         

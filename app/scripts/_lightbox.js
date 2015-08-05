@@ -1,5 +1,5 @@
 // Gallery View
-define(['$','binding','Views'], function( $, Bind, View ) {
+define(['$','binding','views'], function( $, Bind, View ) {
 
     function LightboxView( el, data ) {
         

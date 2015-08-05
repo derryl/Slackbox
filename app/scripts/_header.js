@@ -1,6 +1,6 @@
 
 // Header View
-define(['Views','binding'], function( View, Bind ) {
+define(['views','binding'], function( View, Bind ) {
 
     function HeaderView( el, data ) {
         return View.call( this, el, data );
